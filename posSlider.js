@@ -28,7 +28,8 @@ function imgSlider(bg,buk){
 
 	this.update = function(e){
 		if(bClicked){
-			var offset = ((e.clientX-mouseX)-bgDiv.style.left);
+			var offset = ((e.clientX-mouseX)-(bgDiv.style.left+bgDiv.style.marginLeft));
+			console.log(e.clientX+"");
 			if(offset>parseInt(bgDiv.style.width)-handle.width) offset=parseInt(bgDiv.style.width)-handle.width;
 			else if(offset<0) offset=0;
 			handle.style.marginLeft =offset +"px";

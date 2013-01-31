@@ -10,15 +10,45 @@
 </head>
 
 <body class="main" onmousemove="mouseMoving(event);" onmouseup="mouseUp(event);" onmousedown="mouseDown(event);" onmouseout="mouseOut(event);">
-
-<span class="text" onclick="book.changeDir('default/')">set 1</span>
-
-<span class="text" onclick="book.changeDir('default_2/')">set 2</span>
-<div style="width: 100%;" onmousedown="mouseDown(event);">
-	<div id="visitor-caps2" class="content-container" style="width: 50%; margin: 20px; align: right;" onmousedown="mouseDown(event);"></div>
+<div style="width: 100%;" onclick="mouseDown(event);">
+<table id="mainTable" style="width: 1680px; height: 1050px overflow: hidden;">
+	<tr>
+		<td>
+		<table style="width: 100%;">
+			<tr>
+				<td>
+					<img src="assets/pngs/title.png">
+				</td>
+				<td class="playback" style="display: inline;">
+					<img src="assets/pngs/button1.png">
+				</td>
+				<td>
+					<img src="assets/pngs/button2.png">
+				</td>
+			</tr>
+		</table>	
+		</td>
+	</tr>
+	<tr id="captures" class="playback" style="visibility: visible;" >
+		<td>
+			<table style="width: 100%;">
+				<tr>
+					<td style="width: 50%;">
+						<div id="visitor-caps" class="content-container" onmousedown="mouseDown(event);"></div>
+					</td>
+					<td style="width: 50%;">
+						<div id="celeb-caps" class="content-container" style="width: 100%;" onmousedown="mouseDown(event);"></div>
+					</td>
+				</tr>
+			</table>	
+		</td>
+	</tr>
+	<tr id="thumbs" class="select" style="visibility: hidden;">
+	</tr>
+</table>
 <div style="width: 40%; margin: 20px;">
-<span class="text" id="reset" onclick="book.reset()">reset</span>
-<span class="text" id="toggle" onclick="book.togglePlay()">play</span>
+<span class="text" id="reset" onclick="visitorCaps.hide()">hide</span>
+<span class="text" id="toggle" onclick="visitorCaps.show()">show</span>
 </div>
 </div>
 
@@ -32,10 +62,12 @@
 <script>
 function mouseMoving(e){
 	visitorCaps.update(e);
+	celebCaps.update(e);
 }
 
 function mouseUp(e){
 	visitorCaps.clickUp();
+	celebCaps.clickUp();
 	return false;
 }
 

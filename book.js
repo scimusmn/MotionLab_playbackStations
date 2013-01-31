@@ -20,6 +20,8 @@
 			bPlaying=false;		//keeps track of whether or not the images are loaded.
 		var imgDir="default/";	//storing the name of the directory which we are currently browsing.
 		var numImg = 600;
+		
+		var imgPad=20;
 
 
 		//this is declaring member functions of the book class. The init function is used to load the images
@@ -39,8 +41,8 @@
 				var imageObj = new Image(); 												// new instance for each image
 				//console.log(imgDir+x+".jpg");
 				imageObj.onload = function(){
-					canvas.width=imageObj.width;			//useful if you want to adjust canvas size
-					canvas.height=imageObj.height;
+					canvas.width=imageObj.width+imgPad;			//useful if you want to adjust canvas size
+					canvas.height=imageObj.height+imgPad;
 				}
 				//var fileName = 
 				imageObj.src = imgDir+pad(x,3)+".jpg?"+Math.random();					//generate a unique name for each image, so it doesn't cache
@@ -55,7 +57,9 @@
 		
 		this.drawFrame=function(){			//display image and increment the image pointer. Should separate this into two functions.
 			if(bLoaded){
-				ctx.drawImage(tiles[nDisp], 0,0);
+				ctx.fillStyle = "rgb(150,150,150)";
+				ctx.fillRect (0,0,canvas.width,canvas.height);
+				ctx.drawImage(tiles[nDisp], imgPad/2,imgPad/2);
 			}
 		};
 		

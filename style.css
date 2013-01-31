@@ -1,9 +1,16 @@
 body {
-	background: -webkit-gradient(linear,0% 0%,0% 100%,color-stop(0, #333),color-stop(0.5, #222),color-stop(1, #101015));
+	background-color: #000000;
+}
+
+.mainTable {
+	cellpadding: 50;
 }
 
 .content-container {
-	overflow: hidden; position:relative;
+	overflow: hidden; 
+	position:relative;
+	text-align: center;
+	width: 100%;
 }
 
 .slider-handle {

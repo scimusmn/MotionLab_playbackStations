@@ -10,6 +10,7 @@ function flipPlayer(containerID){
 	var bgDiv = document.createElement("div");
 	bgDiv.class = "slider-background";
 	bgDiv.style.width = 512+"px";
+	
 	cntnr.appendChild(bgDiv);
 	var slide = new imgSlider(bgDiv,flip);
 	slide.connect();
@@ -25,6 +26,21 @@ function flipPlayer(containerID){
 	this.clickUp = function(){
 		slide.clickup();
 	}
+	
+	this.show = function(){
+		cntnr.style.display = 'inline'
+	}
+	
+	this.hide = function(){
+		cntnr.style.display = 'none'
+	}
+	
+	this.changeSet = function(dirName){
+		flip.changeDir(dirName);
+	}
 };
 
-visitorCaps = new flipPlayer("visitor-caps2");
+var visitorCaps = new flipPlayer("visitor-caps");
+var celebCaps = new flipPlayer("celeb-caps");
+
+celebCaps.changeSet("default_2/");
