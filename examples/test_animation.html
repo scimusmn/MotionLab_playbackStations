@@ -1,0 +1,59 @@
+<html>
+<body>
+
+<canvas id="myCanvas" width="500" height="500" style="border:1px solid #c3c3c3;"></canvas>
+
+<script>
+var can = function () {
+
+var canvas;
+
+var context;
+
+
+
+return {
+
+draw: function () {
+
+var r = Math.floor(Math.random() * 255) + 70;
+
+var g = Math.floor(Math.random() * 255) + 70;
+
+var b = Math.floor(Math.random() * 255) + 70;
+
+var s = ‘rgba(‘ + r + ‘,' + g + ‘,' + b + ‘, 0.5)';
+
+
+
+context.rotate(0.2 * Math.PI);
+
+context.fillStyle = s;
+
+context.fillRect(10, 0, 150, 50);
+
+},
+
+init: function () {
+
+canvas = document.getElementById("myCanvas");
+
+context = canvas.getContext("2d");
+
+context.translate(200, 250);
+
+setInterval(can.draw, 250);
+
+}
+
+}
+
+} ();
+
+
+
+window.onload = can.init;
+</script>
+
+</body>
+</html>

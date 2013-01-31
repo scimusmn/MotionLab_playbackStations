@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<link rel="stylesheet" href="style.css" />
+<style type="text/css">
+
+	.text{	color: #aaa;font: 20px arial, sans-serif; border:none;}	
+</style>
+</head>
+
+<body class="main" onmousemove="mouseMoving(event);" onmouseup="mouseUp(event);" onmousedown="mouseDown(event);" onmouseout="mouseOut(event);">
+
+<span class="text" onclick="book.changeDir('default/')">set 1</span>
+
+<span class="text" onclick="book.changeDir('default_2/')">set 2</span>
+<div style="width: 100%;" onmousedown="mouseDown(event);">
+	<div id="visitor-caps2" class="content-container" style="width: 50%; margin: 20px; align: right;" onmousedown="mouseDown(event);"></div>
+<div style="width: 40%; margin: 20px;">
+<span class="text" id="reset" onclick="book.reset()">reset</span>
+<span class="text" id="toggle" onclick="book.togglePlay()">play</span>
+</div>
+</div>
+
+
+<script type="text/javascript" src="utils.js" ></script>
+<script type="text/javascript" src="book.js" ></script>
+<script type="text/javascript" src="posSlider.js" ></script>
+<script type="text/javascript" src="flipPlayer.js" ></script>
+
+
+<script>
+function mouseMoving(e){
+	visitorCaps.update(e);
+}
+
+function mouseUp(e){
+	visitorCaps.clickUp();
+	return false;
+}
+
+function mouseDown(e){
+	return false;
+}
+
+function mouseOut(e){
+	return false;
+}
+</script>
+
+</body>
+</html>

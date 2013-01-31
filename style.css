@@ -1,0 +1,19 @@
+body {
+	background: -webkit-gradient(linear,0% 0%,0% 100%,color-stop(0, #333),color-stop(0.5, #222),color-stop(1, #101015));
+}
+
+.content-container {
+	overflow: hidden; position:relative;
+}
+
+.slider-handle {
+	position:absolute;
+	background:url(assets/pngs/horzScrollLever.png) no-repeat center center;
+	height:55px;
+	width:55px;
+}
+
+.slider-background{
+	background:url(assets/pngs/horzScrollBed.png) no-repeat center center;
+	height: 55px;
+}
