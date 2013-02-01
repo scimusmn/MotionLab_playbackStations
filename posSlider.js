@@ -1,8 +1,11 @@
 function imgSlider(bg,buk){
 	var bgDiv = bg;
+	
 	var handle = document.createElement('img');
+	handle.setAttribute("constrain","x");
+	handle.setAttribute("limits","0,"+extractNumber(bgDiv.style.width));
 	handle.src = src="assets/pngs/horzScrollLever.png";
-	handle.class = "slider-handle";
+	handle.className = "slider-handle";
 	bgDiv.appendChild(handle);
 	
 	var buuk = buk;
@@ -11,32 +14,17 @@ function imgSlider(bg,buk){
 	var bClicked = false;
 	var value = 0;
 	
-	handle.onmousedown = function(e){
-		bClicked=true;
-		mouseX=e.clientX-handle.style.left+handle.style.marginLeft;
-		console.log(e.clientX);
-		return false;
-	};
-	
-	handle.onmouseup = function(){
-		bClicked=false;
-	};
-	
 	this.changeVal = function(perc){
 		handle.style.marginLeft =perc*parseInt(bgDiv.style.width) +"px";
 	}
-
-	this.update = function(e){
-		if(bClicked){
-			var offset = ((e.clientX-mouseX)-(bgDiv.style.left+bgDiv.style.marginLeft));
-			console.log(e.clientX+"");
-			if(offset>parseInt(bgDiv.style.width)-handle.width) offset=parseInt(bgDiv.style.width)-handle.width;
-			else if(offset<0) offset=0;
-			handle.style.marginLeft =offset +"px";
+	
+	handle.changePosition = function(posX,posY){
+			if(posX>parseInt(bgDiv.style.width)-handle.width) posX=parseInt(bgDiv.style.width)-handle.width;
+			else if(posX<0) posX=0;
+			handle.style.marginLeft =posX +"px";
 			
-			buuk.changePosByPercent(offset/(parseFloat(bgDiv.style.width)-handle.width));
+			buuk.changePosByPercent(posX/(parseFloat(bgDiv.style.width)-handle.width));
 			buuk.stop();
-		}
 	};
 	
 	this.clickup = function(){
@@ -44,9 +32,11 @@ function imgSlider(bg,buk){
 	};
 	
 	bgDiv.onmousedown = function(e){
-		mouseX = handle.width/2;
-		bClicked=true;
-		//handle.updatePos(e);
+		console.log(e.clientX+" "+position(bgDiv).x);
+		console.log(bgDiv.style.marginLeft);
+		handle.changePosition(e.clientX-(position(bgDiv).x+handle.width/2),0);
+		drag.setByEventAndObj(e,handle);
+		document.onmousemove = OnMouseMove;
 		return false;
 	};
 	

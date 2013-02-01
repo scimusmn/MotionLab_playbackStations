@@ -8,15 +8,15 @@ function flipPlayer(containerID){
 	flip.init();
 
 	var bgDiv = document.createElement("div");
-	bgDiv.class = "slider-background";
 	bgDiv.style.width = 512+"px";
+	bgDiv.className = "slider-background";
 	
 	cntnr.appendChild(bgDiv);
 	var slide = new imgSlider(bgDiv,flip);
 	slide.connect();
 	
-	this.update = function(event){
-		slide.update(event);
+	/*this.onMouseMove = function(event){
+		slide.onMouseMove(event);
 	}
 	
 	this.onmouseup = function(event){
@@ -25,7 +25,7 @@ function flipPlayer(containerID){
 	
 	this.clickUp = function(){
 		slide.clickup();
-	}
+	}*/
 	
 	this.show = function(){
 		cntnr.style.display = 'inline'
@@ -37,6 +37,10 @@ function flipPlayer(containerID){
 	
 	this.changeSet = function(dirName){
 		flip.changeDir(dirName);
+	}
+	
+	this.onload = function(){
+		
 	}
 };
 

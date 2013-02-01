@@ -21,6 +21,9 @@ body {
 }
 
 .slider-background{
+	position:relative;
 	background:url(assets/pngs/horzScrollBed.png) no-repeat center center;
+	text-align: left;
+	margin: 0 auto;
 	height: 55px;
 }

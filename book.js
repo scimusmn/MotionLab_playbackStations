@@ -37,7 +37,7 @@
 			for (x = 1; x <= numImg; x++) {
 				ctx.clearRect(0,5*canvas.height/8,canvas.width,canvas.height/2);
 				ctx.fillText(Math.round(x/(numImg/100.))+"%", canvas.width/2,3*canvas.height/4);   //display the percentage loaded text
-				console.log(Math.round(x/(numImg/100.))+"%");
+				//console.log(Math.round(x/(numImg/100.))+"%");
 				var imageObj = new Image(); 												// new instance for each image
 				//console.log(imgDir+x+".jpg");
 				imageObj.onload = function(){

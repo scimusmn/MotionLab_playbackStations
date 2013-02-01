@@ -9,8 +9,8 @@
 </style>
 </head>
 
-<body class="main" onmousemove="mouseMoving(event);" onmouseup="mouseUp(event);" onmousedown="mouseDown(event);" onmouseout="mouseOut(event);">
-<div style="width: 100%;" onclick="mouseDown(event);">
+<body class="main" >
+<div style="width: 100%;">
 <table id="mainTable" style="width: 1680px; height: 1050px overflow: hidden;">
 	<tr>
 		<td>
@@ -34,10 +34,10 @@
 			<table style="width: 100%;">
 				<tr>
 					<td style="width: 50%;">
-						<div id="visitor-caps" class="content-container" onmousedown="mouseDown(event);"></div>
+						<div id="visitor-caps" class="content-container"></div>
 					</td>
 					<td style="width: 50%;">
-						<div id="celeb-caps" class="content-container" style="width: 100%;" onmousedown="mouseDown(event);"></div>
+						<div id="celeb-caps" class="content-container"></div>
 					</td>
 				</tr>
 			</table>	
@@ -46,7 +46,7 @@
 	<tr id="thumbs" class="select" style="visibility: hidden;">
 	</tr>
 </table>
-<div style="width: 40%; margin: 20px;">
+<div style="width: 40%; margin: 20px; display: none">
 <span class="text" id="reset" onclick="visitorCaps.hide()">hide</span>
 <span class="text" id="toggle" onclick="visitorCaps.show()">show</span>
 </div>
@@ -54,31 +54,11 @@
 
 
 <script type="text/javascript" src="utils.js" ></script>
+<script type="text/javascript" src="mouseFxn.js" ></script>
 <script type="text/javascript" src="book.js" ></script>
 <script type="text/javascript" src="posSlider.js" ></script>
 <script type="text/javascript" src="flipPlayer.js" ></script>
 
-
-<script>
-function mouseMoving(e){
-	visitorCaps.update(e);
-	celebCaps.update(e);
-}
-
-function mouseUp(e){
-	visitorCaps.clickUp();
-	celebCaps.clickUp();
-	return false;
-}
-
-function mouseDown(e){
-	return false;
-}
-
-function mouseOut(e){
-	return false;
-}
-</script>
 
 </body>
 </html>
