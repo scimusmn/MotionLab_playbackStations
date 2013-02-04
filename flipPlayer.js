@@ -72,7 +72,7 @@ var celebCaps = new flipPlayer("celeb-caps");
 
 
 window.onload = function(){
-	visitorCaps.loadSet("default/");
+	//visitorCaps.loadSet("default/");
 	visitorCaps.init();
 	celebCaps.init();
 }

@@ -16,11 +16,11 @@
 	<tr>
 		<td style="width: 100%;">
 		<table style="width: 100%;">
-			<tr style="width: 100%;">
+			<tr style="width: 100%;" class="playback" style="display: none">
 				<td>
 					<img src="assets/pngs/title.png">
 				</td>
-				<td class="playback" >
+				<td class="playback">
 					<img id="fyv" src="assets/pngs/button1.png" onmousedown="fyvClickDown()" onmouseup="fyvClickUp()">
 				</td>
 				<td class="playback">
@@ -30,10 +30,15 @@
 					<img id="sbs" class="justYou" src="assets/pngs/button3.png" onmousedown="sbsClickDown()" onmouseup="sbsClickUp()" >
 				</td>
 			</tr>
+			<tr style="width: 100%;" class="select" style="display: none">
+				<td>
+					<img src="assets/pngs/title.png">
+				</td>
+			</tr>
 		</table>	
 		</td>
 	</tr>
-	<tr id="captures" class="playback" style="display: table-cell" >
+	<tr id="captures" class="playback" style="display: none" >
 		<td style="width: 100%;">
 			<table style="width: 100%;">
 				<tr style="width: 100%;">
@@ -53,7 +58,9 @@
 			</table>	
 		</td>
 	</tr>
-	<tr id="thumbs" class="select" style="display: none">
+	<tr class="select" style="display: table-row">
+		<td id="thumbs">
+		</td>
 	</tr>
 </table>
 <div style="width: 40%; margin: 20px; display: none">
@@ -68,6 +75,8 @@
 <script type="text/javascript" src="book.js" ></script>
 <script type="text/javascript" src="posSlider.js" ></script>
 <script type="text/javascript" src="flipPlayer.js" ></script>
+<script type="text/javascript" src="thumbSelect.js" ></script>
+<script type="text/javascript" src="webSockets.js" ></script>
 
 </body>
 </html>
