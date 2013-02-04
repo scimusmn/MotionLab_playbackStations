@@ -25,50 +25,65 @@
 		
 		var stopCallback;
 		var callbackObj;
+		
+		canvas.width= 512+imgPad;
+		canvas.height = 576+imgPad;
+		
+		var notLoadedImg = new Image();
+		notLoadedImg.onload = function(){
+			canvas.width= notLoadedImg.width+imgPad;
+			canvas.height = notLoadedImg.height+imgPad;
+		};
+		notLoadedImg.src = "assets/pngs/imageFrame.png";
 
 
 		//this is declaring member functions of the book class. The init function is used to load the images
 		// from the disk, and inform the rest of the class when they are loaded. It also clears out old info. 
 		
+		var imageLoaded = 1;
+		
 		this.init=function(){
+			notLoadedImg.src = "assets/pngs/imageFrame.png";
 			tiles = [];
 			bLoaded=false;
-			canvas.width=512;
-			canvas.height = 576;
+			imageLoaded = 0;
 			canvas.width=canvas.width;			//this clears the html5 canvas, for some reason
-			ctx.font = "bold 72px sans-serif";	//set font size and style
-			ctx.textAlign = "center";
-			ctx.fillText("Loading", canvas.width/2,canvas.height/2);
+			
 			for (x = 1; x <= numImg; x++) {
-				ctx.clearRect(0,5*canvas.height/8,canvas.width,canvas.height/2);
-				ctx.fillStyle = "rgb(150,150,150)";
-				ctx.fillText(Math.round(x/(numImg/100.))+"%", canvas.width/2,3*canvas.height/4);   //display the percentage loaded text
-				//console.log(Math.round(x/(numImg/100.))+"%");
-				var imageObj = new Image(); 												// new instance for each image
-				//console.log(imgDir+x+".jpg");
-				imageObj.onload = function(){
-					canvas.width=imageObj.width+imgPad;			//useful if you want to adjust canvas size
-					canvas.height=imageObj.height+imgPad;
-					bLoaded=true;
-				}
-				//var fileName = 
+				var imageObj = new Image(); 											// new instance for each image
 				imageObj.src = imgDir+pad(x,3)+".jpg?"+Math.random();					//generate a unique name for each image, so it doesn't cache
-				
-					tiles.push(imageObj);										//push the new image into the array of images.
-					//alert("load "+x);
-				
+				tiles.push(imageObj);													//push the new image into the array of images.
 			}
 		};
 		
-		this.drawFrame=function(){			//display image and increment the image pointer. Should separate this into two functions.
+		this.changeNotLoadedImage = function(title){
+			notLoadedImg.src=title;
+		}
+		
+		this.drawFrame=function(){			//display image
 			if(bLoaded){
-				ctx.fillStyle = "rgb(150,150,150)";
+				ctx.fillStyle = "rgb(170,170,170)";
 				ctx.fillRect (0,0,canvas.width,canvas.height);
 				ctx.drawImage(tiles[nDisp], imgPad/2,imgPad/2);
 			}
+			else{
+				var numComp = 0;
+				for(var i=0; i<tiles.length; i++){
+					if(tiles[i].complete){
+						numComp++;
+						canvas.width=tiles[i].width+imgPad;
+						canvas.height=tiles[i].height+imgPad;
+					}}
+				if(numComp>=tiles.length&&numComp) bLoaded=true;
+				
+				
+				ctx.fillStyle = "rgb(170,170,170)";
+				ctx.fillRect (0,0,canvas.width,canvas.height);
+				ctx.drawImage(notLoadedImg, imgPad/2,imgPad/2);
+			}
 		};
 		
-		this.idle=function(){
+		this.idle=function(){						//increment the image pointer, if we are playing
 			if(bPlaying&&nDisp<tiles.length-1){
 				nDisp++;
 				imgSld.changeVal(nDisp/tiles.length);
@@ -80,6 +95,10 @@
 		
 		this.connectSlider = function(sld){
 			imgSld=sld;
+		}
+		
+		this.isLoaded = function(){
+			return bLoaded;
 		}
 		
 		this.isPlaying = function(){
@@ -115,6 +134,8 @@
 		
 		this.reset=function(){
 			nDisp=0;
+			bPlaying=false;
+			if(imgSld) imgSld.changeVal(0);
 		};
 		
 		this.changeDir=function(dir){

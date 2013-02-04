@@ -121,11 +121,12 @@ function fyvClickUp(){
 	$('fyv').src="assets/pngs/Button1.png";
 	var selEl = $('.select');
 	for(var i=0; i<selEl.length; i++){
-		selEl[i].style.display = "table-cell";
+		selEl[i].style.display = "table-row";
 	}
 	for(var i=0; i<$('.playback').length; i++){
 		$('.playback')[i].style.display="none";
 	}
+	jyClickUp();
 }
 
 function jyClickDown(){
@@ -149,9 +150,6 @@ function sbsClickDown(){
 
 function sbsClickUp(){
 	$('sbs').src="assets/pngs/Button3.png";
-	
-	celebCaps.loadSet("default_2/");
-	
 	var selEl = $('.sideBySide');
 	for(var i=0; i<selEl.length; i++){
 		selEl[i].style.display = "table-cell";
@@ -159,6 +157,8 @@ function sbsClickUp(){
 	for(var i=0; i<$('.justYou').length; i++){
 		$('.justYou')[i].style.display="none";
 	}
+	
+	//celebCaps.loadSet("default_2/");
 }
 
 var bothPlaying = false;

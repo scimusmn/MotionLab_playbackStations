@@ -1,9 +1,10 @@
 // Set the address and port of the Camera control computer server
-var HOST = '127.0.0.1';
+var HOST = '10.75.135.37';
 var PORT = 11999;
 var userName = "perotmuseum.local/exhibit"
 var password = "Changeme.1"
 var seqFolderPath = "C:\\Program Files\\10.01.01 motionlab_3_0\\motionlab_3_0\\sequence-folders\\"
+var folderToWatch = "sequences";
 
 /*********************************************************
 / You should not have to edit below this point 
@@ -24,6 +25,16 @@ function readDir(path){
 	
 	return files;
 }
+
+var changedFile;
+
+/*fs.watch(folderToWatch,{persistent: true},function(event,filename){
+	if(changedFile!=filename){
+		//console.log(event+" "+filename);
+		//changedFile=filename;
+		if(webSock) webSock.send("seq="+filename);
+	}
+});*/
 
 /***********************************************************
 / To interface with command line objects, we require ('childProcess')
@@ -104,9 +115,13 @@ wss.on('connection', function(ws) {
 
 function onOpen(){
 	var files = readDir("sequences/");
+	var celFiles = readDir("celeb_seq/");
 	if(webSock){
 		for(var i=0; i<files.length; i++){
 			webSock.send("seq="+files[i]);
+		}
+		for(var i=0; i<celFiles.length; i++){
+			webSock.send("cel="+celFiles[i]);
 		}
 	}
 }

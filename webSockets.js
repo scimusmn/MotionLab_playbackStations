@@ -22,8 +22,16 @@ function wsClient(){
     ws.onmessage = function (evt) { 
 		//var received_msg = evt.data;
 		//alert("Message is received... " + received_msg);
-		if(evt.data.split("=")[0]=="seq"){
-			visGroup.addOrChangeSet(evt.data.split("=")[1]);
+		
+		switch(evt.data.split("=")[0]){
+			case "seq":
+				visGroup.addOrChangeSet(evt.data.split("=")[1]);
+				break;
+			case "cel":
+				celebGroup.addOrChangeSet(evt.data.split("=")[1]);
+				break;
+			default:
+				break;
 		}
     };
 	

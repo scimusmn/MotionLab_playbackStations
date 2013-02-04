@@ -28,6 +28,11 @@ var $ = function( id ) {
 
 };
 
+function degToRad(d) {
+    // Converts degrees to radians
+    return d * 0.0174532925199432957;
+}
+
 function extractNumber(value)
 {
     var n = parseInt(value);
