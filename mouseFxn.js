@@ -112,3 +112,68 @@ function OnMouseUp(e)
         //_debug.innerHTML = 'mouse up';
     }
 }
+
+function fyvClickDown(){
+	$('fyv').src="assets/pngs/Button1-active.png";
+}
+
+function fyvClickUp(){
+	$('fyv').src="assets/pngs/Button1.png";
+	var selEl = $('.select');
+	for(var i=0; i<selEl.length; i++){
+		selEl[i].style.display = "table-cell";
+	}
+	for(var i=0; i<$('.playback').length; i++){
+		$('.playback')[i].style.display="none";
+	}
+}
+
+function jyClickDown(){
+	$('jy').src="assets/pngs/Button2-active.png";
+}
+
+function jyClickUp(){
+	$('jy').src="assets/pngs/Button2.png";
+	var selEl = $('.justYou');
+	for(var i=0; i<selEl.length; i++){
+		selEl[i].style.display = "table-cell";
+	}
+	for(var i=0; i<$('.sideBySide').length; i++){
+		$('.sideBySide')[i].style.display="none";
+	}
+}
+
+function sbsClickDown(){
+	$('sbs').src="assets/pngs/Button3-active.png";
+}
+
+function sbsClickUp(){
+	$('sbs').src="assets/pngs/Button3.png";
+	
+	celebCaps.loadSet("default_2/");
+	
+	var selEl = $('.sideBySide');
+	for(var i=0; i<selEl.length; i++){
+		selEl[i].style.display = "table-cell";
+	}
+	for(var i=0; i<$('.justYou').length; i++){
+		$('.justYou')[i].style.display="none";
+	}
+}
+
+var bothPlaying = false;
+
+function pbClickDown(){
+	if(bothPlaying){
+		$('playBoth').src = "assets/pngs/playboth-active.png"
+		visitorCaps.pause();
+		celebCaps.pause();
+		bothPlaying=false;
+	}
+	else {
+		bothPlaying=true;
+		$('playBoth').src = "assets/pngs/pauseboth.png"
+		visitorCaps.play();
+		celebCaps.play();
+	}
+}

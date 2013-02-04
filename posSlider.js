@@ -2,8 +2,6 @@ function imgSlider(bg,buk){
 	var bgDiv = bg;
 	
 	var handle = document.createElement('img');
-	handle.setAttribute("constrain","x");
-	handle.setAttribute("limits","0,"+extractNumber(bgDiv.style.width));
 	handle.src = src="assets/pngs/horzScrollLever.png";
 	handle.className = "slider-handle";
 	bgDiv.appendChild(handle);
@@ -15,7 +13,7 @@ function imgSlider(bg,buk){
 	var value = 0;
 	
 	this.changeVal = function(perc){
-		handle.style.marginLeft =perc*parseInt(bgDiv.style.width) +"px";
+		handle.style.marginLeft =perc*(parseInt(bgDiv.style.width)-handle.width) +"px";
 	}
 	
 	handle.changePosition = function(posX,posY){
@@ -41,29 +39,6 @@ function imgSlider(bg,buk){
 	};
 	
 	this.connect = function(){
-		buuk.imgSld = this;
+		buuk.connectSlider(this);
 	}
 };
-
-//var slider = new imgSlider($('slider'),book);
-//slider.connect();
-
-/*$('$body').onmousemove = function(e){
-	slider.update(e);
-}
-
-$('$body').onmouseup = function(e){
-	slider.clickup(e);
-	return false;
-}
-
-$('$body').onmousedown = function(e){
-	return false;
-}
-
-function mouseOut(e){
-	//slider.clickup(e);
-	return false;
-}*/
-
-//onmousemove="mouseMoving(event);" onmouseup="mouseUp(event);" onmousedown="mouseDown(event);" onmouseout="mouseOut(event);"

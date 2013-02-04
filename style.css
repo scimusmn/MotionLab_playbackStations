@@ -3,7 +3,9 @@ body {
 }
 
 .mainTable {
-	cellpadding: 50;
+	width: 1680px;
+	height: 1050px;
+	overflow: hidden;
 }
 
 .content-container {
@@ -15,15 +17,29 @@ body {
 
 .slider-handle {
 	position:absolute;
-	background:url(assets/pngs/horzScrollLever.png) no-repeat center center;
 	height:55px;
 	width:55px;
 }
 
+.controls {
+	position:relative;
+	text-align: center;
+	margin: 0 auto;
+	padding-top: 40px;
+	padding-left: 30px;
+	width: 100%;
+}
+
+.button {
+	display:inline-block;
+}
+
 .slider-background{
 	position:relative;
+	display:inline-block;
 	background:url(assets/pngs/horzScrollBed.png) no-repeat center center;
 	text-align: left;
 	margin: 0 auto;
 	height: 55px;
 }
+
