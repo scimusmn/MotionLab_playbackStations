@@ -5,14 +5,17 @@ function setPointer(setName,flp){
 	var visitorMode = true;
 	var celebCallback;
 	
+	var bClicked = false;
+	
 	thumb.src = folderName+"/thumb.jpg?"+Math.random();
 	thumb.id = folderName;
 	thumb.className = "thumbnail";
 	
 	thumb.onmousedown = function(){
+		bClicked=true;
+		thumb.src = "assets/pngs/thumbBG.png";
 		if(visitorMode){
 			thumb.style.border = "5px solid #cccc00"
-			thumb.src = "assets/pngs/thumbBG.png";
 		}
 		else {
 			celebCallback.resetSelected();
@@ -20,21 +23,34 @@ function setPointer(setName,flp){
 		}
 	}
 	
+	thumb.onmouseout = function(){
+		thumb.style.border = "5px solid #cccccc"
+		thumb.src = folderName+"/thumb.jpg?"+Math.random();
+	}
+	
 	thumb.onmouseup = function(){
-		if(visitorMode){
-			thumb.style.border = "5px solid #cccccc"
+		if(bClicked){
+			if(visitorMode){
+				thumb.style.border = "5px solid #cccccc"
+				
+				thumbClick();
+			}
 			thumb.src = folderName+"/thumb.jpg?"+Math.random();
-			thumbClick();
+			flipPlr.loadSet(folderName+"/");
+			bClicked = false;
 		}
-		flipPlr.loadSet(folderName+"/")
 	}
 	
 	this.resetBorderColor = function(){
 		thumb.style.border = "5px solid #cccccc"
 	}
+
+	this.reset = function(){
+		thumb.style.border = "5px solid #cccccc"
+		thumb.src = folderName+"/thumb.jpg?"+Math.random();
+	}
 	
 	this.setCelebMode = function(celebCB){
-		console.log("celeb mode!");
 		visitorMode=false;
 		celebCallback = celebCB;
 	}
@@ -86,6 +102,8 @@ function setGroup(flp,parent,rws,clm,asTable){
 	}
 	else {
 		var topDiv = document.createElement('div');
+		var secondDiv = document.createElement('div');
+		topDiv.appendChild(secondDiv);
 		for(var i=0; i<rows; i++){
 			var newRow = document.createElement('div');
 			for(var j=0; j<columns; j++){
@@ -93,7 +111,7 @@ function setGroup(flp,parent,rws,clm,asTable){
 				newRow.appendChild(newCell);
 				elements.push(newCell);
 			}
-			topDiv.appendChild(newRow);
+			secondDiv.appendChild(newRow);
 		}
 		
 		parent.appendChild(topDiv);

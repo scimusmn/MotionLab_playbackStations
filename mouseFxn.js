@@ -22,8 +22,6 @@ var drag = new function (){
         
         // we need to access the element in OnMouseMove
         this.Element = obj;
-		
-		console.log(this.Element.tagName);
 	}
 };
 
@@ -78,6 +76,8 @@ function OnMouseDown(e)
         // prevent text selection (except IE)
         return false;
     }
+	
+	return false;
 }
 
 function OnMouseMove(e)
@@ -134,6 +134,8 @@ function jyClickDown(){
 }
 
 function jyClickUp(){
+	celebCaps.unload();
+
 	$('jy').src="assets/pngs/Button2.png";
 	var selEl = $('.justYou');
 	for(var i=0; i<selEl.length; i++){

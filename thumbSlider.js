@@ -14,11 +14,12 @@ function thumbSlider(bg,thmDiv){
 	}
 	
 	handle.changePosition = function(posX,posY){
-			if(posY>parseInt(bgDiv.style.height)-handle.height) posY=parseInt(bgDiv.style.height)-handle.height;
+			if(posY>parseInt(bgDiv.clientHeight)-handle.height) posY=parseInt(bgDiv.clientHeight)-handle.height;
 			else if(posY<0) posY=0;
 			handle.style.marginTop =posY +"px";
 			
-			thumbDiv.style.marginTop = (thumbDiv.scrollHeight-thumbDiv.style.height)*(posX/(parseFloat(bgDiv.style.height)-handle.height));
+			
+			thumbDiv.style.marginTop = -(thumbDiv.scrollHeight-thumbDiv.parentNode.clientHeight)*(posY/(parseFloat(bgDiv.clientHeight)-handle.height))+"px";
 	};
 	
 	this.clickup = function(){
@@ -26,13 +27,11 @@ function thumbSlider(bg,thmDiv){
 	};
 	
 	bgDiv.onmousedown = function(e){
-		console.log(e.clientX+" "+position(bgDiv).x);
-		console.log(bgDiv.style.marginLeft);
-		handle.changePosition(e.clientY-(position(bgDiv).y+handle.height/2),0);
+		handle.changePosition(0,e.clientY-(position(bgDiv).y+handle.height/2));
 		drag.setByEventAndObj(e,handle);
 		document.onmousemove = OnMouseMove;
 		return false;
 	};
 };
 
-thumbSlider($('celebThumbSlider'),$('celebThumbs').getElementByTagName('div'));
+var thmSlider = new thumbSlider($('celebThumbSlider'),$('celebThumbs').getElementsByTagName('div')[0].getElementsByTagName('div')[0]);

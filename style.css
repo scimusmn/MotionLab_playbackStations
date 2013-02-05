@@ -1,7 +1,7 @@
 body {
 	background-color: #000000;
-	width: 1680px;
-	height: 1050px;
+	width: 1630px;
+	height: 1000px;
 }
 
 .mainTable {
@@ -58,9 +58,10 @@ body {
 	position:relative;
 	display:inline-block;
 	background:url(assets/pngs/vertScrollBed.png) no-repeat center center;
-	text-align: center;
+	text-align: left;
 	margin: 0 auto;
-	height: 55px;
+	width: 55px;
+	height: 650px;
 }
 
 .thumbnail {

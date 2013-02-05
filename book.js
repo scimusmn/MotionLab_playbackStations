@@ -17,7 +17,8 @@
 		var tiles = [];			//create the array of images which we flip through
 		var nDisp=0;			//stores the value of the current image being displayed
 		var bLoaded=false,
-			bPlaying=false;		//keeps track of whether or not the images are loaded.
+			bPlaying=false,
+			bLoading = false;		//keeps track of whether or not the images are loaded.
 		var imgDir="default/";	//storing the name of the directory which we are currently browsing.
 		var numImg = 600;
 		
@@ -29,12 +30,13 @@
 		canvas.width= 512+imgPad;
 		canvas.height = 576+imgPad;
 		
+		var defaultSrc = "assets/pngs/imageFrame.png";
 		var notLoadedImg = new Image();
 		notLoadedImg.onload = function(){
 			canvas.width= notLoadedImg.width+imgPad;
 			canvas.height = notLoadedImg.height+imgPad;
 		};
-		notLoadedImg.src = "assets/pngs/imageFrame.png";
+		notLoadedImg.src = defaultSrc;
 
 
 		//this is declaring member functions of the book class. The init function is used to load the images
@@ -43,6 +45,7 @@
 		var imageLoaded = 1;
 		
 		this.init=function(){
+			bLoading = true;
 			notLoadedImg.src = "assets/pngs/imageFrame.png";
 			tiles = [];
 			bLoaded=false;
@@ -56,7 +59,15 @@
 			}
 		};
 		
+		this.unload = function(){
+			bLoaded=false;
+			notLoadedImg.src = defaultSrc;
+			tiles = null;
+			tiles = [];
+		}
+		
 		this.changeNotLoadedImage = function(title){
+			defaultSrc = title;
 			notLoadedImg.src=title;
 		}
 		
@@ -74,7 +85,7 @@
 						canvas.width=tiles[i].width+imgPad;
 						canvas.height=tiles[i].height+imgPad;
 					}}
-				if(numComp>=tiles.length&&numComp) bLoaded=true;
+				if(numComp>=tiles.length&&numComp) bLoading=false,bLoaded=true;
 				
 				
 				ctx.fillStyle = "rgb(170,170,170)";
@@ -99,6 +110,10 @@
 		
 		this.isLoaded = function(){
 			return bLoaded;
+		}
+		
+		this.isLoading = function(){
+			return bLoading;
 		}
 		
 		this.isPlaying = function(){

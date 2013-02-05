@@ -57,14 +57,20 @@ function flipPlayer(containerID){
 	}
 	
 	this.loadSet = function(setName){
-		playBut.src = playImg;
-		flip.changeDir(setName);
-		flip.reset();
-		flip.init();
+		if(!flip.isLoading()){
+			playBut.src = playImg;
+			flip.changeDir(setName);
+			flip.reset();
+			flip.init();
+		}
 	}
 	
 	this.celebMode = function(){
 		flip.changeNotLoadedImage("assets/pngs/compare-text.png");
+	}
+	
+	this.unload = function(){
+		flip.unload();
 	}
 	
 	playBut.onmousedown = this.togglePlay;
