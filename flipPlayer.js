@@ -6,6 +6,9 @@ function flipPlayer(containerID){
 	var playImg = "assets/pngs/playButton.png";
 	var pauseImg = "assets/pngs/pauseButton.png";
 	
+	var drawTimer;
+	var idleTimer;
+	
 	var controls = document.createElement("div");
 	controls.className = "controls";
 	cntnr.appendChild(controls);
@@ -29,8 +32,6 @@ function flipPlayer(containerID){
 	this.init = function(){
 		slide.connect();
 	
-		setInterval(flip.drawFrame,50);
-		setInterval(flip.idle,50);
 	}
 	
 	this.changeSet = function(dirName){
@@ -62,6 +63,24 @@ function flipPlayer(containerID){
 			flip.changeDir(setName);
 			flip.reset();
 			flip.init();
+			
+			drawTimer = setInterval(flip.drawFrame,50);
+			idleTimer = setInterval(flip.idle,50);
+		}
+	}
+	
+	this.loadFromArray = function(caps){
+		if(!flip.isLoading()){
+			playBut.src = playImg;
+			flip.loadFromArray(caps);
+			flip.reset();
+			
+			if(drawTimer){
+				clearInterval(drawTimer);
+				clearInterval(idleTimer);
+			}
+			drawTimer = setInterval(flip.drawFrame,50);
+			idleTimer = setInterval(flip.idle,50);
 		}
 	}
 	
@@ -69,8 +88,18 @@ function flipPlayer(containerID){
 		flip.changeNotLoadedImage("assets/pngs/compare-text.png");
 	}
 	
+	this.setDrawInterval = function(){
+			drawTimer = setInterval(flip.drawFrame,50);
+			idleTimer = setInterval(flip.idle,50);
+	}
+	
 	this.unload = function(){
 		flip.unload();
+		flip.reset();
+		
+		
+		clearInterval(drawTimer);
+		clearInterval(idleTimer);
 	}
 	
 	playBut.onmousedown = this.togglePlay;

@@ -35,8 +35,17 @@ function InitDragDrop()
     document.onmouseup = OnMouseUp;
 }
 
+var refreshTimeout;
+
 function OnMouseDown(e)
 {
+
+	if(refreshTimeout){
+		clearTimeout(refreshTimeout);
+	}
+	refreshTimeout = setTimeout(function(){document.location.reload(true);},360000);
+	
+
     // IE is retarded and doesn't pass the event object
     if (e == null) 
         e = window.event; 
@@ -117,16 +126,34 @@ function fyvClickDown(){
 	$('fyv').src="assets/pngs/Button1-active.png";
 }
 
+var refreshTimer;
+var refreshCount =0;
+
+function refreshZero(){
+	refreshCount=0;
+}
+
 function fyvClickUp(){
-	$('fyv').src="assets/pngs/Button1.png";
-	var selEl = $('.select');
-	for(var i=0; i<selEl.length; i++){
-		selEl[i].style.display = "table-row";
+	if(refreshTimer) clearTimeout(refreshTimer);
+	refreshTimer = setTimeout(refreshZero,10000);
+	if(refreshCount>=2) document.location.reload(true);
+	else{
+		visitorCaps.unload();
+		
+		if(window.stop !== undefined) window.stop();
+		else if(document.execCommand !== undefined) document.execCommand("Stop", false);
+
+		$('fyv').src="assets/pngs/Button1.png";
+		var selEl = $('.select');
+		for(var i=0; i<selEl.length; i++){
+			selEl[i].style.display = "table-row";
+		}
+		for(var i=0; i<$('.playback').length; i++){
+			$('.playback')[i].style.display="none";
+		}
+		jyClickUp();
 	}
-	for(var i=0; i<$('.playback').length; i++){
-		$('.playback')[i].style.display="none";
-	}
-	jyClickUp();
+	refreshCount++;
 }
 
 function jyClickDown(){
@@ -135,6 +162,7 @@ function jyClickDown(){
 
 function jyClickUp(){
 	celebCaps.unload();
+	celebCaps.setDrawInterval();
 
 	$('jy').src="assets/pngs/Button2.png";
 	var selEl = $('.justYou');

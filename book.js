@@ -59,9 +59,18 @@
 			}
 		};
 		
+		this.loadFromArray = function(caps){
+			tiles = null;
+			tiles = caps;
+			bLoaded=true;
+		}
+		
 		this.unload = function(){
-			bLoaded=false;
+			bLoaded=bLoading=bPlaying=false;
 			notLoadedImg.src = defaultSrc;
+			for(var i=0; i<tiles.length; i++){
+				tiles[i].src = null;
+			}
 			tiles = null;
 			tiles = [];
 		}
@@ -73,6 +82,7 @@
 		
 		this.drawFrame=function(){			//display image
 			if(bLoaded){
+				canvas.width = canvas.width;
 				ctx.fillStyle = "rgb(170,170,170)";
 				ctx.fillRect (0,0,canvas.width,canvas.height);
 				ctx.drawImage(tiles[nDisp], imgPad/2,imgPad/2);
@@ -87,7 +97,7 @@
 					}}
 				if(numComp>=tiles.length&&numComp) bLoading=false,bLoaded=true;
 				
-				
+				canvas.width = canvas.width;
 				ctx.fillStyle = "rgb(170,170,170)";
 				ctx.fillRect (0,0,canvas.width,canvas.height);
 				ctx.drawImage(notLoadedImg, imgPad/2,imgPad/2);

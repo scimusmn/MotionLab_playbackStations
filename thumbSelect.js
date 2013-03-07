@@ -7,6 +7,8 @@ function setPointer(setName,flp){
 	
 	var bClicked = false;
 	
+	var caps;
+	
 	thumb.src = folderName+"/thumb.jpg?"+Math.random();
 	thumb.id = folderName;
 	thumb.className = "thumbnail";
@@ -34,9 +36,11 @@ function setPointer(setName,flp){
 				thumb.style.border = "5px solid #cccccc"
 				
 				thumbClick();
+				flipPlr.loadSet(folderName+"/");
 			}
+			else if(caps) flipPlr.loadFromArray(caps);
 			thumb.src = folderName+"/thumb.jpg?"+Math.random();
-			flipPlr.loadSet(folderName+"/");
+			
 			bClicked = false;
 		}
 	}
@@ -53,6 +57,13 @@ function setPointer(setName,flp){
 	this.setCelebMode = function(celebCB){
 		visitorMode=false;
 		celebCallback = celebCB;
+		caps = [];
+		
+		for (x = 1; x <= 600; x++) {
+			var imageObj = new Image(); 											// new instance for each image
+			imageObj.src = folderName+"/"+pad(x,3)+".jpg";					//generate a unique name for each image, so it doesn't cache
+			caps.push(imageObj);													//push the new image into the array of images.
+		}
 	}
 	
 	this.getFolderName = function(){
