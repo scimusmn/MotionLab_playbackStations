@@ -136,7 +136,7 @@ function refreshZero(){
 function fyvClickUp(){
 	if(refreshTimer) clearTimeout(refreshTimer);
 	refreshTimer = setTimeout(refreshZero,10000);
-	if(refreshCount>=2) document.location.reload(true);
+	if(refreshCount>=0) document.location.reload(true);
 	else{
 		visitorCaps.unload();
 		

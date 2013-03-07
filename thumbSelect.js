@@ -23,7 +23,7 @@ function setPointer(setName,flp){
 			celebCallback.resetSelected();
 			thumb.style.border = "5px solid #cccc00"
 		}
-	}
+	};
 	
 	thumb.onmouseout = function(){
 		thumb.style.border = "5px solid #cccccc"
@@ -43,6 +43,42 @@ function setPointer(setName,flp){
 			
 			bClicked = false;
 		}
+	}
+	
+	this.bindThumb = function(thm){
+		thumb = thm;
+		
+		thumb.onmousedown = function(){
+		bClicked=true;
+		thumb.src = "assets/pngs/thumbBG.png";
+		if(visitorMode){
+			thumb.style.border = "5px solid #cccc00"
+		}
+		else {
+			celebCallback.resetSelected();
+			thumb.style.border = "5px solid #cccc00"
+		}
+	};
+	
+	thumb.onmouseout = function(){
+		thumb.style.border = "5px solid #cccccc"
+		thumb.src = folderName+"/thumb.jpg?"+Math.random();
+	}
+	
+	thumb.onmouseup = function(){
+		if(bClicked){
+			if(visitorMode){
+				thumb.style.border = "5px solid #cccccc"
+				
+				thumbClick();
+				flipPlr.loadSet(folderName+"/");
+			}
+			else if(caps) flipPlr.loadFromArray(caps);
+			thumb.src = folderName+"/thumb.jpg?"+Math.random();
+			
+			bClicked = false;
+		}
+	}
 	}
 	
 	this.resetBorderColor = function(){
@@ -142,15 +178,41 @@ function setGroup(flp,parent,rws,clm,asTable){
 		}
 	}
 	
+	this.rebindByElementChild = function(element){
+		var imgs = element.getElementsByTagName('img');
+		if(imgs.length){
+			var img = imgs[0];
+			for(var i=0; i<sets.length; i++){
+				console.log(img.id);
+				if(img.id==sets[i].getFolderName()) sets[i].bindThumb(img);
+			}
+		}
+	}
+	
 	this.addOrChangeSet = function(setName){
-		if($(setName)) thumb.src = setName+"/thumb.jpg?"+Math.random();
+		if($(setName)){
+			$(setName).src = setName+"/thumb.jpg?"+Math.random();
+			for(var i=elements.length-1; i>1&&elements.length>1; i--){
+				elements[i].innerHTML=elements[i-1].innerHTML;
+				this.rebindByElementChild(elements[i]);
+			}
+			elements[0].innerHTML='';
+			elements[0].appendChild($(setName));
+		}
 		else{
 			var newSet = new setPointer(setName,flipPlr);
 			if(!visitorMode) newSet.setCelebMode(this);
 			var curNum = sets.length;
 			sets.push(newSet);
-			var curCell = elements[curNum];
-			curCell.appendChild(newSet.getElement());
+			//var curCell = elements[curNum];
+			//curCell.appendChild(newSet.getElement());
+			
+			for(var i=elements.length-1; i>=1&&elements.length>1; i--){
+				elements[i].innerHTML=elements[i-1].innerHTML;
+				this.rebindByElementChild(elements[i]);
+			}
+			elements[0].innerHTML='';
+			elements[0].appendChild(newSet.getElement());
 		}
 	}
 	

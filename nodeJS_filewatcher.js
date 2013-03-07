@@ -1,10 +1,11 @@
 // Set the address and port of the Camera control computer server
 var HOST = '10.75.135.37';
 var PORT = 11999;
-var userName = "perotmuseum.local/exhibit"
+var userName = "perotmuseum.local\\exhibit"
 var password = "Changeme.1"
-var seqFolderPath = "C:\\Program Files\\10.01.01 motionlab_3_0\\motionlab_3_0\\sequence-folders\\"
+var seqFolderPath = __dirname+"\\sequences\\";
 var folderToWatch = "sequences";
+var pathToWatch = "Users\\Public\\Pictures\\highSpeed";
 
 /*********************************************************
 / You should not have to edit below this point 
@@ -19,9 +20,15 @@ var fs = require('fs');
 
 function readDir(path){
 	var files = fs.readdirSync(path);
+	
+	files.sort(function(a,b){
+		return fs.statSync("./"+path+a).mtime.getTime()-fs.statSync("./"+path+b).mtime.getTime();
+	});
 	for(var i=0; i<files.length; i++){
 		files[i]=path+files[i];
 	}
+	
+	
 	
 	return files;
 }
@@ -36,14 +43,59 @@ var changedFile;
 	}
 });*/
 
+/*******************************************
+// For websockets, require 'ws'.Server
+********************************************/
+
+
+var WebSocketServer = require('ws').Server, wss = new WebSocketServer({port: 8080});
+
+//Tell the wsServer what to do on connnection to a client; 
+
+var webSock = null;
+
+wss.on('connection', function(ws) {
+	
+	webSock = ws;
+	
+	onOpen();
+	
+    ws.on('message', function(message) {
+        console.log('received: %s', message);
+		//ws.send('something');
+    });
+	
+	ws.on('close',function(){
+		webSock=null;
+	});
+
+	ws.on('error',function(error){
+		webSock=null;
+		console.log("Error: "+error);
+	});
+});
+
+function onOpen(){
+	var files = readDir("sequences/");
+	var celFiles = readDir("celeb_seq/");
+	if(webSock){
+		for(var i=0; i<files.length; i++){
+			webSock.send("seq="+files[i]);
+		}
+		for(var i=0; i<celFiles.length; i++){
+			webSock.send("cel="+celFiles[i]);
+		}
+	}
+}
+
 /***********************************************************
 / To interface with command line objects, we require ('childProcess')
 ************************************************************/
 
-var terminal = require('child_process').spawn('cmd');
+/*var terminal = require('child_process').spawn('cmd');
 
 terminal.stdout.on('data', function (data) {
-    console.log(data);
+    console.log(data.toString());
 });
 
 terminal.on('exit', defaultExit);
@@ -62,22 +114,24 @@ function fileTransferExit(code){
 }
 
 function fileServerConnect(path){
-	setTimeout(function() {
+	//setTimeout(function() {
 		console.log('Connecting to fileserver');
-		terminal.stdin.write("net use Z: //" + HOST + "/" + path.substr(0,path.length-1) + " " + password + " /user:" + userName+"\n");
-		terminal.stdin.end();
-	}, 1000);
+		terminal.stdin.write("net use Z: \\\\" + HOST + "\\" + path.substr(0,path.length) + " " + password + " /user:" + userName+"\n");
+		//terminal.stdin.end();
+	//}, 1000);
 }
 
-function transferFile(folder){
+//fileServerConnect(pathToWatch);
+
+function transferFileFromServer(folder){
 	transferredFolder=folder;
 	terminal.on('exit', fileTransferExit);
-	setTimeout(function() {
-		console.log('Transferring set');
-		terminal.stdin.write("xcopy /I /E /D /Y 'Z:\\"+folder+"' "+seqFolderPath+folder+"'\n" );
-		terminal.stdin.end();
-	}, 10000);
-}
+	//setTimeout(function() {
+		console.log('Transferring set '+folder);
+		terminal.stdin.write('xcopy /I /E /D /Y "Z:\\'+folder+'" "'+seqFolderPath+folder+'"\n' );
+		//terminal.stdin.end();
+	//}, 10000);
+}*/
 
 /*setTimeout(function() {
     console.log('Sending stdin to terminal');
@@ -85,45 +139,39 @@ function transferFile(folder){
     terminal.stdin.end();
 }, 1000);*/
 
+function fileServerConnect(path){
+	var terminal = require('child_process').spawn('cmd');
 
-/*******************************************
-// For websockets, require 'ws'.Server
-********************************************/
-
-
-var WebSocketServer = require('ws').Server, wss = new WebSocketServer({port: 8080});
-
-//Tell the wsServer what to do on connnection to a client; 
-
-var webSock;
-
-wss.on('connection', function(ws) {
-	
-	webSock = ws;
-	
-	onOpen();
-	
-    ws.on('message', function(message) {
-        console.log('received: %s', message);
-		ws.send('something');
-    });
-	
-	ws.on('close',function(){
-		webSock=null;
+	terminal.stdout.on('data', function (data) {
+		console.log(data.toString());
 	});
-});
 
-function onOpen(){
-	var files = readDir("sequences/");
-	var celFiles = readDir("celeb_seq/");
-	if(webSock){
-		for(var i=0; i<files.length; i++){
-			webSock.send("seq="+files[i]);
-		}
-		for(var i=0; i<celFiles.length; i++){
-			webSock.send("cel="+celFiles[i]);
-		}
-	}
+	terminal.on('exit', function(code){
+		
+	});
+
+	console.log('Connecting to fileserver');
+	terminal.stdin.write("net use Z: \\\\" + HOST + "\\" + path.substr(0,path.length-1) + " " + password + " /user:" + userName+" /y\n");
+	terminal.stdin.end();
+}
+
+var transferredFolder;
+
+function transferFileFromServer(folder){
+	transferredFolder=folder;
+	var terminal = require('child_process').spawn('cmd');
+
+	terminal.stdout.on('data', function (data) {
+		console.log(data.toString());
+	});
+
+	terminal.on('exit', function(code){
+		if(webSock) webSock.send("seq="+"sequences/"+transferredFolder);
+	});
+		
+	console.log('Transferring set '+folder);
+	terminal.stdin.write('xcopy /I /E /D /Y "Z:\\'+folder+'" "'+seqFolderPath+folder+'"\n' );
+	terminal.stdin.end();
 }
 
 /*************************************************************************
@@ -141,14 +189,19 @@ function connectToTCPServer(){
 		if(connectInterval) clearInterval(connectInterval);
 		console.log('CONNECTED TO: ' + HOST + ':' + PORT);
 		// Write a message to the socket as soon as the client is connected, the server will receive it as message from the client 
-		client.write('<mapRequest />');
+		client.write('<mapRequest />[/TCP]');
 	});
 }
+
+connectToTCPServer();
 
 
 var connectInterval;
 
-client.on('error',function(error){ connectInterval = setInterval(connectToTCPServer,1000)});
+client.on('error',function(error){ 
+	console.log("ERROR: "+error);
+	connectInterval = setInterval(connectToTCPServer,1000)
+});
 
 
 ////////////////////////////////////////////////////////////////
@@ -160,23 +213,28 @@ client.on('error',function(error){ connectInterval = setInterval(connectToTCPSer
 
 
 client.on('data', function(data) {
-    switch(data.split("=")[0]){
-		case "map_root":
-			fileServerConnect(data.split("=")[1]);
-			break;
-		case "set":
-			transferFile(data.split("=")[1]);
-			break;
-		default:
-			break;
+	
+	data = data.toString();
+
+	var tcpData = data.split("[/TCP]");
+	for(var i=0; i<tcpData.length; i++){
+		console.log(tcpData[i]);
+    		switch(tcpData[i].split("=")[0]){
+			case "map_root":
+				fileServerConnect(tcpData[i].split("=")[1]);
+				break;
+			case "set":
+				transferFileFromServer(tcpData[i].split("=")[1]);
+				break;
+			default:
+				break;
+		}
 	}
     //console.log('DATA: ' + data);
-    // Close the client socket completely		//Not sure that this needs to happen
-    //client.destroy();
     
 });
 
 // Add a 'close' event handler for the client socket
 client.on('close', function() {
-    console.log('Connection closed');
+    //console.log('Connection closed');
 });
